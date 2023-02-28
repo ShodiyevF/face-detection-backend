@@ -1,0 +1,20 @@
+const { createToken } = require("../../lib/jwt");
+const { loginModel } = require("./auth.model");
+
+async function loginCtrl(req, res) {
+    const model = await loginModel(req.body)
+    if (model.action) {
+        delete model.action 
+        res.json(model)
+    } else {
+        res.json({
+            status: 200,
+            message: `Muvaffaqiyatli tizimga kirdingiz`,
+            token: await createToken(model)
+        })
+    }
+}
+
+module.exports = {
+    loginCtrl
+}
