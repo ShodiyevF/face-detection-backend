@@ -5,8 +5,8 @@ const error = {
     VALIDATION_ERROR: 'VALIDATION_ERROR',
     AUTHORIZATION_ERROR: 'AUTHORIZATION_ERROR',
     TOKEN_EXPIRED: 'TOKEN_EXPIRED',
-}
+};
 
 module.exports = {
-    error
-}
+    error,
+};
