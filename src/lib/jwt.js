@@ -1,4 +1,5 @@
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'development'}.local` });
+
 const jwt = require('jsonwebtoken')
 
 async function createToken(id) {
