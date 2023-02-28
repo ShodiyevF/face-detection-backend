@@ -2,15 +2,27 @@ require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'development'}.
 const jwt = require('jsonwebtoken')
 
 async function createToken(id) {
-    const token = await jwt.sign({id: id}, process.env.JWT_SECRET, {
-        expiresIn: +process.env.JWT_EXPIRATION
-    })
-    return token
+    try {
+        const token = await jwt.sign({ id: id }, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRATION
+        })
+        return token
+    } catch (error) {
+        next(error)
+    }
 }
 
 async function tokenVerifer(token) {
-    const verifed = await jwt.verify(token, process.env.JWT_SECRET)
-    return verifed
+    try {
+        const verifed = await jwt.verify(token, process.env.JWT_SECRET)
+        return verifed
+    } catch (error) {
+        if (error.expiredAt) {
+            return {
+                status: 402 
+            }
+        }
+    }
 }
 
 module.exports = {

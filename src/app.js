@@ -16,7 +16,7 @@ async function app(routes) {
     function lister() {
         app.listen(port, () => {
             console.info('=================================');
-            console.info(`======= ENV: ${action} =======`);
+            console.info(`======== ENV: ${action} =======`);
             console.info(`🚀 App listening on the port ${port}`);
             console.info('=================================');
         });
