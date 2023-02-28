@@ -13,9 +13,7 @@ async function loginModel(body) {
             message: 'Bunday foydalanuvchi topilmadi !'
         }
     }
-
-    console.log(email.rows[0].user_password);
-    console.log(body.user_password);
+    
     if (email.rows[0].user_password != body.user_password) {
         return {
             action: true,
