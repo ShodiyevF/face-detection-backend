@@ -16,7 +16,9 @@ const uniqRow = async (query, ...arr) => {
         const data = await client.query(query, arr);
         client.release();
         return data;
-    } catch (error) {}
+    } catch (error) {
+        console.log(error, 'POSTGRESQL UNIQROW');
+    }
 };
 
 module.exports = {
