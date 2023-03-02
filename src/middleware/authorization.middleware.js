@@ -19,7 +19,7 @@ async function authorizationMiddleware(req, res, next) {
         if (token.status && token.status == 402) {
             return res.json({
                 status: 404,
-                error: error.TOKEN_EXPIRED,
+                error: error.AUTHORIZATION_ERROR,
                 message: `Mavjud bo'magan token`,
             });
         }

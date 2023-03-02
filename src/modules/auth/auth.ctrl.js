@@ -5,9 +5,9 @@ async function loginCtrl(req, res) {
     const model = await loginModel(req.body);
     if (model.action) {
         delete model.action;
-        res.json(model);
+        res.status(model.status).json(model);
     } else {
-        res.json({
+        res.status(200).json({
             status: 200,
             message: `Muvaffaqiyatli tizimga kirdingiz`,
             token: await createToken(model),
