@@ -90,6 +90,8 @@ exports.fileuploadMiddleware = function (uploadFolder, allowedFileTypes, allowed
                 const filename = `${Date.now()}-${String(Math.round(Math.random() * 1e9)).padEnd(15, '0') + ext}`;
                 req.files[reqFileKeyName].mv(uploadFolder + '\\' + filename);
                 next();
+            } else {
+                next();
             }
         } catch (error) {
             next(error);
