@@ -7,8 +7,8 @@ async function getUsersCtrl(req, res) {
 
 async function createUsersCtrl(req, res) {
     const model = await createUsersModel(req.body, req.files);
-    if(model.action){
-        delete model.action
+    if (model.action) {
+        delete model.action;
         res.status(model.status).json(model);
     } else {
         res.status(201).json({
@@ -21,5 +21,5 @@ async function createUsersCtrl(req, res) {
 
 module.exports = {
     getUsersCtrl,
-    createUsersCtrl
+    createUsersCtrl,
 };

@@ -7,6 +7,12 @@ const { getUsersCtrl, createUsersCtrl } = require('./users.ctrl');
 const express = require('express').Router();
 
 express.get('/api/users', authorizationMiddleware, (req, res) => getUsersCtrl(req, res));
-express.post('/api/users', authorizationMiddleware, fileuploadMiddleware(UPLOAD_FOLDER, PROFILE_IMAGE_TYPES, PROFILE_IMAGE_SIZE, 'user_img', true), createUserValidation, (req, res) => createUsersCtrl(req, res));
+express.post(
+    '/api/users',
+    authorizationMiddleware,
+    fileuploadMiddleware(UPLOAD_FOLDER, PROFILE_IMAGE_TYPES, PROFILE_IMAGE_SIZE, 'user_img', true),
+    createUserValidation,
+    (req, res) => createUsersCtrl(req, res),
+);
 
 module.exports = express;

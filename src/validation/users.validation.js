@@ -3,7 +3,7 @@ const { uniqRow } = require('../lib/pg');
 
 async function createUserValidation(req, res, next) {
     const body = req.body;
-    
+
     if (!body.user_firstname) {
         res.json({
             status: 404,
@@ -76,9 +76,8 @@ async function createUserValidation(req, res, next) {
             error: error.VALIDATION_ERROR,
             message: `user_password uzunligi 64tadan kichik bo'lishi kerak`,
         });
-    }
-     else {
-        next()
+    } else {
+        next();
     }
 }
 

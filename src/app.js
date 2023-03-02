@@ -13,7 +13,7 @@ async function app(routes) {
     const app = express();
     const port = process.env.PORT || 3000;
     const action = process.env.NODE_ENV || 'development';
-    
+
     function lister() {
         app.listen(port, () => {
             console.info('=================================');
@@ -22,7 +22,7 @@ async function app(routes) {
             console.info('=================================');
         });
     }
-    
+
     function initializeMiddlewares() {
         app.use(expressfileupload());
         app.use(express.json());
@@ -30,20 +30,20 @@ async function app(routes) {
         app.use(cors(CORS_OPTIONS));
         app.use(express.urlencoded({ extended: true }));
     }
-    
+
     function initializeRoutes(routes) {
         routes.forEach(route => {
             app.use(route);
         });
     }
-    
+
     async function runner() {
         await setMockdata();
         await initializeMiddlewares();
         await initializeRoutes(routes);
         await lister();
     }
-    
+
     runner();
 }
 
