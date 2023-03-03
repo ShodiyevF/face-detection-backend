@@ -4,9 +4,9 @@ async function readController(req, res) {
     const model = await readBranchModel(req.body);
     if (model.action) {
         delete model.action;
-        res.json(model);
+        res.status(model.status).json(model);
     } else {
-        res.json(model);
+        res.status(200).json(model);
     }
 }
 
@@ -14,10 +14,10 @@ async function createController(req, res) {
     const model = await createBrachesModel(req.body);
     if (model.action) {
         delete model.action;
-        res.json(model);
+        res.status(model.status).json(model);
     } else {
-        res.json({
-            status: 200,
+        res.status(201).json({
+            status: 201,
             message: `Muvaffaqiyatli qo'shildi`,
         });
     }
@@ -27,9 +27,9 @@ async function updateController(req, res) {
     const model = await updateBranchModel(req.params, req.body);
     if (model.action) {
         delete model.action;
-        res.json(model);
+        res.status(model.status).json(model);
     } else {
-        res.json({
+        res.status(200).json({
             status: 200,
             message: `Muvaffaqiyatli o'zgartirildi`,
             data: model
@@ -41,9 +41,9 @@ async function deleteController(req, res) {
     const model = await deleteBranchModel(req.params);
     if (model.action) {
         delete model.action;
-        res.json(model);
+        res.status(model.status).json(model);
     } else {
-        res.json({
+        res.status(200).json({
             status: 200,
             message: `Muvaffaqiyatli o'chirildi`,
         });
