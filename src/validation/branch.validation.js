@@ -2,7 +2,6 @@ const { error } = require('../config/error.names');
 
 function createBranchValidation(req, res, next) {
     const body = req.body;
-    const params = req.params;
     if (!body.branch_name) {
         res.json({
             status: 404,
@@ -10,6 +9,21 @@ function createBranchValidation(req, res, next) {
             message: 'branch_name majburiy',
         });
     } else if (body.branch_name.length > 30) {
+        res.json({
+            status: 404,
+            error: error.VALIDATION_ERROR,
+            message: `branch_name uzunligi 30tadan kichik bo'lishi kerak`,
+        });
+    } else {
+        next();
+    }
+}
+
+function updateBranchValidation(req, res, next) {
+    const body = req.body;
+    const params = req.params;
+
+    if (body.branch_name && body.branch_name.length > 30) {
         res.json({
             status: 404,
             error: error.VALIDATION_ERROR,
@@ -41,5 +55,6 @@ function deleteBranchValidation(req, res, next) {
 
 module.exports = {
     createBranchValidation,
-    deleteBranchValidation
+    deleteBranchValidation,
+    updateBranchValidation
 };
