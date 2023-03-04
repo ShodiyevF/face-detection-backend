@@ -11,7 +11,8 @@ async function getUsersModel() {
         user_img,
         user_email,
         role_id,
-        branch_id
+        branch_id,
+        user_createdat
         from users`
 
     const selectUser = await uniqRow(querySelectUser);
