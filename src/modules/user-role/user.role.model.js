@@ -26,9 +26,7 @@ async function getUserRoleModel() {
 }
 
 async function updateUserRoleModel(body, params) {
-
-    const userRole = await uniqRow(
-        'select * from userrole where role_id = $1, params.role_id');
+    const userRole = await uniqRow('select * from userrole where role_id = $1, params.role_id');
 
     if (!userRole.rows.length) {
         return {
@@ -50,15 +48,13 @@ async function updateUserRoleModel(body, params) {
         };
     }
 
-    const result = await uniqRow(
-        'update userrole set role_name = $1 where role_id = $2 returning *', role_name, role_id);
+    const result = await uniqRow('update userrole set role_name = $1 where role_id = $2 returning *', role_name, role_id);
 
     return result.rows;
 }
 
 async function deleteUserRoleModel(params) {
-    const userRole = await uniqRow(
-        'select * from userrole where role_id = $1', params.role_id);
+    const userRole = await uniqRow('select * from userrole where role_id = $1', params.role_id);
 
     if (!userRole.rows.length) {
         return {

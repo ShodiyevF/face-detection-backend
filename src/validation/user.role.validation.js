@@ -28,7 +28,7 @@ function deleteUserRoleValidation(req, res, next) {
         res.json({
             status: 404,
             error: error.VALIDATION_ERROR,
-            message: `kasb uuid bo'lishi kerek`
+            message: `kasb uuid bo'lishi kerek`,
         });
     } else {
         next();

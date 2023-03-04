@@ -1,9 +1,4 @@
-const {
-    createUserRoleModel,
-    getUserRoleModel,
-    updateUserRoleModel,
-    deleteUserRoleModel,
-} = require('./user.role.model');
+const { createUserRoleModel, getUserRoleModel, updateUserRoleModel, deleteUserRoleModel } = require('./user.role.model');
 
 async function createUserRoleCtrl(req, res) {
     const userRole = await createUserRoleModel(req.body);
@@ -12,7 +7,7 @@ async function createUserRoleCtrl(req, res) {
         delete userRole.action;
         res.status(userRole.status).json(userRole);
     } else {
-         res.status(201).json({
+        res.status(201).json({
             status: 201,
             message: 'UserRole has created',
         });
@@ -41,13 +36,13 @@ async function updateUserRoleCtrl(req, res) {
 async function deleteUserRoleCtrl(req, res) {
     const userRole = await deleteUserRoleModel(req.params);
 
-    if(userRole.action){
+    if (userRole.action) {
         delete userRole.action;
         res.json(userRole);
     } else {
         res.json({
             status: 200,
-            message: `Muvafaqqiyatli o'chirildi !`
+            message: `Muvafaqqiyatli o'chirildi !`,
         });
     }
 }
@@ -56,5 +51,5 @@ module.exports = {
     createUserRoleCtrl,
     getUserRoleCtrl,
     updateUserRoleCtrl,
-    deleteUserRoleCtrl
+    deleteUserRoleCtrl,
 };
