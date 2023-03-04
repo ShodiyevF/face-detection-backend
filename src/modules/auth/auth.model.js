@@ -16,7 +16,7 @@ async function loginModel(body) {
     if (email.rows[0].user_password != body.user_password) {
         return {
             action: true,
-            status: 400,
+            status: 402,
             error: error.USER_PASSWORD_NOTCORRECT,
             message: `Foydalanuvchining paroli noto'g'ri !`,
         };
