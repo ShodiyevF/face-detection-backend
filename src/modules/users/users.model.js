@@ -13,14 +13,14 @@ async function getUsersModel() {
         role_id,
         branch_id,
         user_createdat
-        from users`
+        from users`;
 
     const selectUser = await uniqRow(querySelectUser);
 
     for (const user of selectUser.rows) {
-        const allowedbranch = await uniqRow('select * from allowedbranch where user_id = $1', user.user_id)
+        const allowedbranch = await uniqRow('select * from allowedbranch where user_id = $1', user.user_id);
 
-        user.allowed_branches = allowedbranch.rows
+        user.allowed_branches = allowedbranch.rows;
     }
 
     return selectUser.rows;

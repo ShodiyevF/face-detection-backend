@@ -1,9 +1,4 @@
-const {
-    createUserRoleModel,
-    getUserRoleModel,
-    updateUserRoleModel,
-    deleteUserRoleModel,
-} = require('./user.role.model');
+const { createUserRoleModel, getUserRoleModel, updateUserRoleModel, deleteUserRoleModel } = require('./user.role.model');
 
 async function getUserRoleCtrl(req, res) {
     const userRole = await getUserRoleModel();
@@ -17,7 +12,7 @@ async function createUserRoleCtrl(req, res) {
         delete userRole.action;
         res.status(userRole.status).json(userRole);
     } else {
-         res.status(201).json({
+        res.status(201).json({
             status: 201,
             message: 'UserRole has created',
             data: userRole
@@ -43,7 +38,7 @@ async function updateUserRoleCtrl(req, res) {
 async function deleteUserRoleCtrl(req, res) {
     const userRole = await deleteUserRoleModel(req.params);
 
-    if(userRole.action){
+    if (userRole.action) {
         delete userRole.action;
         res.status(userRole.status).json(userRole);
     } else {
@@ -59,5 +54,5 @@ module.exports = {
     createUserRoleCtrl,
     getUserRoleCtrl,
     updateUserRoleCtrl,
-    deleteUserRoleCtrl
+    deleteUserRoleCtrl,
 };
