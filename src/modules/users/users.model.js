@@ -5,28 +5,22 @@ const path = require('path');
 async function getUsersModel() {
     const querySelectUser = `
         select
-        u.user_id,
-        u.user_firstname,
-        u.user_lastname,
-        u.user_img,
-        u.user_email,
-        u.user_password,
-        u.role_id,
-        u.branch_id,
-        array_agg(ab.allowedbranch_id) as allowed_branches
-        from users as u
-        inner join allowedbranch as ab on ab.user_id = u.user_id
-        group by u.user_id,
-        u.user_firstname,
-        u.user_lastname,
-        u.user_img,
-        u.user_email,
-        u.user_password,
-        u.role_id,
-        u.branch_id
-        `;
+        user_id,
+        user_firstname,
+        user_lastname,
+        user_img,
+        user_email,
+        role_id,
+        branch_id
+        from users`
 
     const selectUser = await uniqRow(querySelectUser);
+
+    for (const user of selectUser.rows) {
+        const allowedbranch = await uniqRow('select * from allowedbranch where user_id = $1', user.user_id)
+
+        user.allowed_branches = allowedbranch.rows
+    }
 
     return selectUser.rows;
 }
