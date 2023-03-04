@@ -1,4 +1,4 @@
-const { getUsersModel, createUsersModel, updateUsersModel } = require('./users.model');
+const { getUsersModel, createUsersModel, updateUsersModel, deleteUserModel } = require('./users.model');
 
 async function getUsersCtrl(req, res) {
     const model = await getUsersModel();
@@ -33,8 +33,23 @@ async function updateUsersCtrl(req, res) {
     }
 }
 
+async function deleteUserCtrl(req, res) {
+    const model = await deleteUserModel(req.params);
+    if (model && model.action) {
+        delete model.action;
+        res.status(model.status).json(model);
+    } else {
+        res.status(200).json({
+            status: 200,
+            message: 'The user successfully delete!',
+            // data: model,
+        });
+    }
+}
+
 module.exports = {
     getUsersCtrl,
     createUsersCtrl,
     updateUsersCtrl,
+    deleteUserCtrl
 };

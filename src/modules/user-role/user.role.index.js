@@ -1,7 +1,7 @@
-const express = require('../auth/auth.index');
-const { userRoleValidation, deleteUserRoleValidation } = require('../../validation/user.role.validation');
+const { deleteUserRoleValidation, createUserRoleValidation, updateUserRoleValidation } = require('../../validation/user.role.validation');
 const { createUserRoleCtrl, getUserRoleCtrl, updateUserRoleCtrl, deleteUserRoleCtrl } = require('./user.role.ctrl');
 const { authorizationMiddleware } = require('../../middleware/authorization.middleware');
+const express = require('../auth/auth.index');
 
 express.get(
     '/api/userrole',
@@ -11,13 +11,13 @@ express.get(
 express.post(
     '/api/userrole',
     authorizationMiddleware,
-    userRoleValidation,
+    createUserRoleValidation,
     (req, res) => createUserRoleCtrl(req, res));
 
 express.patch(
     '/api/userrole/:role_id',
     authorizationMiddleware,
-    userRoleValidation,
+    updateUserRoleValidation,
     (req, res) => updateUserRoleCtrl(req, res));
 
 express.delete(

@@ -208,8 +208,32 @@ async function updateUsersModel(body, files, params) {
     return selectUser.rows;
 }
 
+async function deleteUserModel(params) {
+    const user = await uniqRow('select * from users where user_id = $1', params.user_id);
+
+    if (!user.rows.length) {
+        return {
+            action: true,
+            status: 404,
+            error: error.USER_NOT_FOUND,
+            message: `${params.user_id} Bunday foydalanuvchi topilmadi !`,
+        };
+    }
+
+    const allowedbranches = await uniqRow('select * from allowedbranch where user_id = $1', params.user_id)
+
+    if (allowedbranches.rows.length) {
+        for (const i of allowedbranches.rows) {
+            await uniqRow(`delete from allowedbranch where allowedbranch_id = $1`, i.allowedbranch_id)
+        }
+    }
+
+    await uniqRow('delete from users where user_id = $1', params.user_id)
+}
+
 module.exports = {
     getUsersModel,
     createUsersModel,
     updateUsersModel,
+    deleteUserModel
 };

@@ -1,5 +1,7 @@
 create database faceid;
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 drop table if exists branches cascade;
 create table branches(
     branch_id uuid DEFAULT uuid_generate_v4 () primary key,
