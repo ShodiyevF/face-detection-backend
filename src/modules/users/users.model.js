@@ -128,9 +128,9 @@ async function createUsersModel(body, files) {
 
     files[UPLOAD_IMG_NAME].mv(UPLOAD_FOLDER + '\\' + filename);
 
-    const users = (await getUsersModel()).find(el => el.user_id == createdUser.rows[0].user_id)
+    const users = (await getUsersModel()).find(el => el.user_id == createdUser.rows[0].user_id);
 
-    return users
+    return users;
 }
 
 async function updateUsersModel(body, files, params) {
@@ -153,8 +153,14 @@ async function updateUsersModel(body, files, params) {
     }
     const user_firstname = body.user_firstname && body.user_firstname.length ? body.user_firstname.trim() : user.rows[0].user_firstname;
     const user_lastname = body.user_lastname && body.user_lastname.length ? body.user_lastname.trim() : user.rows[0].user_lastname;
-    const user_email = body.user_email && body.user_email.length ? (body.user_email == 'false' ? null : body.user_email.trim()) : user.rows[0].user_email;
-    const user_password = body.user_password && body.user_password.length ? (body.user_password == 'false' ? null : body.user_password.trim()) : user.rows[0].user_password;
+    const user_email =
+        body.user_email && body.user_email.length ? (body.user_email == 'false' ? null : body.user_email.trim()) : user.rows[0].user_email;
+    const user_password =
+        body.user_password && body.user_password.length
+            ? body.user_password == 'false'
+                ? null
+                : body.user_password.trim()
+            : user.rows[0].user_password;
     const role_id = body.role_id && body.role_id.length ? body.role_id.trim() : user.rows[0].role_id;
     const branch_id = body.branch_id && body.branch_id.length ? body.branch_id.trim() : user.rows[0].branch_id;
 
@@ -169,7 +175,7 @@ async function updateUsersModel(body, files, params) {
                     message: `Filial uuid bo'lishi kerak`,
                 };
             }
-            const checkBranch = await uniqRow('select * from branches where branch_id = $1', branch)
+            const checkBranch = await uniqRow('select * from branches where branch_id = $1', branch);
             if (!checkBranch.rows.length) {
                 return {
                     action: true,
@@ -195,9 +201,9 @@ async function updateUsersModel(body, files, params) {
         files[UPLOAD_IMG_NAME].mv(UPLOAD_FOLDER + '\\' + user_img);
     }
 
-    const users = (await getUsersModel()).find(el => el.user_id == params.user_id)
-    
-    return users
+    const users = (await getUsersModel()).find(el => el.user_id == params.user_id);
+
+    return users;
 }
 
 async function deleteUserModel(params) {
