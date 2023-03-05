@@ -19,7 +19,7 @@ async function createController(req, res) {
         res.status(201).json({
             status: 201,
             message: `Muvaffaqiyatli qo'shildi`,
-            data: model
+            data: model,
         });
     }
 }
@@ -33,7 +33,7 @@ async function updateController(req, res) {
         res.status(200).json({
             status: 200,
             message: `Muvaffaqiyatli o'zgartirildi`,
-            data: model
+            data: model,
         });
     }
 }

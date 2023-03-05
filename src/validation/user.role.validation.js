@@ -66,13 +66,13 @@ function deleteUserRoleValidation(req, res, next) {
         res.json({
             status: 403,
             error: error.VALIDATION_ERROR_USERROLE_REQUIRED,
-            message: `role_id kiritish majburiy`
+            message: `role_id kiritish majburiy`,
         });
     } else if (!params.role_id.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')) {
         res.json({
             status: 403,
             error: error.VALIDATION_ERROR_USERROLE_ID_UUID,
-            message: `kasb uuid bo'lishi kerek`
+            message: `kasb uuid bo'lishi kerek`,
         });
     } else {
         next();

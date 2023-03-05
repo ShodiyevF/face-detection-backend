@@ -16,7 +16,7 @@ async function authorizationMiddleware(req, res, next) {
 
         const token = await tokenVerifer(authorization);
 
-        if (!token || token.status && token.status == 402) {
+        if (!token || (token.status && token.status == 402)) {
             return res.json({
                 status: 401,
                 error: error.AUTHORIZATION_ERROR,
