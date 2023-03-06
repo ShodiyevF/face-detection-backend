@@ -7,7 +7,7 @@ async function authorizationMiddleware(req, res, next) {
         const authorization = req.headers.authorization;
 
         if (!req.headers || !authorization) {
-            return res.json({
+            return res.status(401).json({
                 status: 401,
                 error: error.AUTHORIZATION_ERROR,
                 message: 'header da authorization majburiy',
@@ -17,7 +17,7 @@ async function authorizationMiddleware(req, res, next) {
         const token = await tokenVerifer(authorization);
 
         if (!token || (token.status && token.status == 402)) {
-            return res.json({
+            return res.status(401).json({
                 status: 401,
                 error: error.AUTHORIZATION_ERROR,
                 message: `Mavjud bo'magan token`,
@@ -27,7 +27,7 @@ async function authorizationMiddleware(req, res, next) {
         const user = await uniqRow('select * from users where user_id = $1', token.id);
 
         if (!user.rows.length) {
-            return res.json({
+            return res.status(401).json({
                 status: 401,
                 error: error.AUTHORIZATION_ERROR,
                 message: `Tokenni egasi bo'lgan foydalanuvchi topilmadi`,
