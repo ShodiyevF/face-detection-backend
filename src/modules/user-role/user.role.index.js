@@ -3,22 +3,10 @@ const { createUserRoleCtrl, getUserRoleCtrl, updateUserRoleCtrl, deleteUserRoleC
 const { authorizationMiddleware } = require('../../middleware/authorization.middleware');
 const express = require('../auth/auth.index');
 
-express.get('/api/userrole', authorizationMiddleware, (req, res) => getUserRoleCtrl(req, res));
+express.get('/api/userRole', authorizationMiddleware, (req, res) => getUserRoleCtrl(req, res));
 
-express.post(
-    '/api/userrole',
-    authorizationMiddleware,
-    createUserRoleValidation,
-    (req, res) => createUserRoleCtrl(req, res));
+express.post('/api/userRole', authorizationMiddleware, createUserRoleValidation, (req, res) => createUserRoleCtrl(req, res));
 
-express.patch(
-    '/api/userrole/:role_id',
-    authorizationMiddleware,
-    updateUserRoleValidation,
-    (req, res) => updateUserRoleCtrl(req, res));
+express.patch('/api/userRole/:role_id', authorizationMiddleware, updateUserRoleValidation, (req, res) => updateUserRoleCtrl(req, res));
 
-express.post('/api/userrole', authorizationMiddleware, userRoleValidation, (req, res) => createUserRoleCtrl(req, res));
-
-express.patch('/api/userrole/:role_id', authorizationMiddleware, userRoleValidation, (req, res) => updateUserRoleCtrl(req, res));
-
-express.delete('/api/userrole/:role_id', authorizationMiddleware, deleteUserRoleValidation, (req, res) => deleteUserRoleCtrl(req, res));
+express.delete('/api/userRole/:role_id', authorizationMiddleware, deleteUserRoleValidation, (req, res) => deleteUserRoleCtrl(req, res));

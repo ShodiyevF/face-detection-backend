@@ -42,7 +42,7 @@ async function deleteUserCtrl(req, res) {
         res.status(200).json({
             status: 200,
             message: 'The user successfully delete!',
-            // data: model,
+            data: model,
         });
     }
 }
@@ -51,5 +51,5 @@ module.exports = {
     getUsersCtrl,
     createUsersCtrl,
     updateUsersCtrl,
-    deleteUserCtrl
+    deleteUserCtrl,
 };

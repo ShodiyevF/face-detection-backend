@@ -23,9 +23,8 @@ async function createUserRoleModel(body) {
 }
 
 async function updateUserRoleModel(body, params) {
-
     const userRole = await uniqRow('select * from userrole where role_id = $1', params.role_id);
-    
+
     if (!userRole.rows.length) {
         return {
             action: true,
@@ -34,8 +33,12 @@ async function updateUserRoleModel(body, params) {
             message: `${params.role_id} bunday kasb topilmadi !`,
         };
     }
-    
-    const roleName = await uniqRow('select * from userrole where upper(role_name) = $1 and role_id != $2', body.role_name.trim().toUpperCase(), params.role_id);
+
+    const roleName = await uniqRow(
+        'select * from userrole where upper(role_name) = $1 and role_id != $2',
+        body.role_name.trim().toUpperCase(),
+        params.role_id,
+    );
 
     if (roleName.rows.length) {
         return {
@@ -45,7 +48,7 @@ async function updateUserRoleModel(body, params) {
             message: 'bunday kasb nomi mavjud',
         };
     }
-    
+
     const result = await uniqRow('update userrole set role_name = $1 where role_id = $2 returning *', body.role_name.trim(), params.role_id);
 
     return result.rows;

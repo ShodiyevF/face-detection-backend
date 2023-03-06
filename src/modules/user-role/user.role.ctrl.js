@@ -15,7 +15,7 @@ async function createUserRoleCtrl(req, res) {
         res.status(201).json({
             status: 201,
             message: 'UserRole has created',
-            data: userRole
+            data: userRole,
         });
     }
 }
@@ -30,7 +30,7 @@ async function updateUserRoleCtrl(req, res) {
         res.status(200).json({
             status: 200,
             message: `Muvafaqqiyatli o'zgartirildi!`,
-            data: userRole
+            data: userRole,
         });
     }
 }
@@ -45,7 +45,7 @@ async function deleteUserRoleCtrl(req, res) {
         res.status(200).json({
             status: 200,
             message: `Muvafaqqiyatli o'chirildi !`,
-            data: userRole
+            data: userRole,
         });
     }
 }
