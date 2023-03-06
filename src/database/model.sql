@@ -35,3 +35,12 @@ create table allowedbranch(
     branch_id uuid not null references branches(branch_id),
     user_id uuid not null references users(user_id)
 );
+
+drop table if exists controllers cascade;
+create table controllers(
+    controller_id uuid DEFAULT uuid_generate_v4 () primary key,
+    controller_name varchar(30) not null,
+    controller_url text not null,
+    branch_id uuid not null references branches(branch_id),
+    user_createdat TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
