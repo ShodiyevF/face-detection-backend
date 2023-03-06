@@ -93,7 +93,7 @@ async function deleteBranchModel(body) {
     if (users.rows.length) {
         return {
             action: true,
-            status: 401,
+            status: 400,
             error: error.BRANCH_DELETE_ERROR,
             message: `O'chirmoqchi bo'lgan filial da bog'langan foydalanuvchi bor`,
         };
