@@ -1,6 +1,7 @@
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'development'}.local` });
 
 const { errorMiddleware } = require('./middleware/error.widdleware.js');
+const expressfileupload = require('express-fileupload');
 const setMockdata = require('./config/database.js');
 const { stream } = require('./config/logger.js');
 const CORS_OPTIONS = require('./config/cors.js');
@@ -23,6 +24,7 @@ async function app(routes) {
     }
 
     function initializeMiddlewares() {
+        app.use(expressfileupload());
         app.use(express.json());
         app.use(morgan(process.env.LOG_FORMAT, { stream }));
         app.use(cors(CORS_OPTIONS));

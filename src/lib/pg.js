@@ -4,7 +4,7 @@ const pg = require('pg');
 
 const pool = new pg.Pool({
     user: 'postgres',
-    password: 'test',
+    password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: 'localhost',
     port: 5432,
@@ -16,7 +16,9 @@ const uniqRow = async (query, ...arr) => {
         const data = await client.query(query, arr);
         client.release();
         return data;
-    } catch (error) {}
+    } catch (error) {
+        console.log(error, 'POSTGRESQL UNIQROW');
+    }
 };
 
 module.exports = {
