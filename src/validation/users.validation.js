@@ -1,5 +1,18 @@
 const { error } = require('../config/error.names');
-const { uniqRow } = require('../lib/pg');
+
+async function getUserImgValidation(req, res, next) {
+    const params = req.params;
+
+    if (!params.user_id.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')) {
+        return res.status(403).json({
+            status: 403,
+            error: error.VALIDATION_ERROR_USER_USER_ID_UUID,
+            message: `user_id uuid bo'lishi kerak`,
+        });
+    } else {
+        next();
+    }
+}
 
 async function createUserValidation(req, res, next) {
     const body = req.body;
@@ -122,6 +135,7 @@ async function createUserValidation(req, res, next) {
         next();
     }
 }
+
 async function updateUserValidation(req, res, next) {
     const body = req.body;
 
@@ -200,6 +214,7 @@ async function deleteUserValidation(req, res, next) {
 }
 
 module.exports = {
+    getUserImgValidation,
     createUserValidation,
     updateUserValidation,
     deleteUserValidation,

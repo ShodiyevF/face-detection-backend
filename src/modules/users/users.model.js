@@ -28,7 +28,7 @@ async function getUsersModel() {
         const selectBranch = await uniqRow('select * from branches where branch_id = $1', user.branch_id);
         const selectRoles = await uniqRow('select * from userrole where role_id = $1', user.role_id);
 
-        user.user_img = 'http://192.168.1.25:3000/api/users/img/' + user.user_img;
+        user.user_img = 'http://192.168.1.139:3001/api/users/img/' + user.user_id;
         user.allowed_branches = allowedBranches;
         user.branch = selectBranch.rows[0];
         user.role = selectRoles.rows[0];
@@ -38,6 +38,21 @@ async function getUsersModel() {
     }
 
     return selectUser.rows;
+}
+
+async function getUserImgModel(params) {
+    const user = await uniqRow('select * from users where user_id = $1', params.user_id)
+
+    if (!user.rows.length) {
+        return {
+            action: true,
+            status: 404,
+            error: error.USER_NOT_FOUND,
+            message: 'Bunday foydalanuvchi topilmadi !',
+        };
+    }
+
+    return user.rows[0].user_img
 }
 
 async function createUsersModel(body, files) {
@@ -231,6 +246,7 @@ async function deleteUserModel(params) {
 
 module.exports = {
     getUsersModel,
+    getUserImgModel,
     createUsersModel,
     updateUsersModel,
     deleteUserModel,
