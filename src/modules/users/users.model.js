@@ -41,7 +41,7 @@ async function getUsersModel() {
 }
 
 async function getUserImgModel(params) {
-    const user = await uniqRow('select * from users where user_id = $1', params.user_id)
+    const user = await uniqRow('select * from users where user_id = $1', params.user_id);
 
     if (!user.rows.length) {
         return {
@@ -52,7 +52,7 @@ async function getUserImgModel(params) {
         };
     }
 
-    return user.rows[0].user_img
+    return user.rows[0].user_img;
 }
 
 async function createUsersModel(body, files) {

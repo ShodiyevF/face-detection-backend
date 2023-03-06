@@ -103,7 +103,7 @@ async function deleteBranchModel(body) {
         };
     }
 
-    const allowedBranches = await uniqRow('select * from allowedbranch where branch_id = $1', branch_id)
+    const allowedBranches = await uniqRow('select * from allowedbranch where branch_id = $1', branch_id);
 
     if (allowedBranches.rows.length) {
         return {

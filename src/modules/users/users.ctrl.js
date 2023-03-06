@@ -1,5 +1,5 @@
 const { getUsersModel, createUsersModel, updateUsersModel, deleteUserModel, getUserImgModel } = require('./users.model');
-const path = require('path')
+const path = require('path');
 
 async function getUsersCtrl(req, res) {
     const model = await getUsersModel();
@@ -12,8 +12,8 @@ async function getUserImgCtrl(req, res) {
         delete model.action;
         res.status(model.status).json(model);
     } else {
-        console.log(path.join(process.cwd(), '/uploads/'+ model));
-        res.status(200).sendFile(path.join(process.cwd(), '/uploads/'+ model));
+        console.log(path.join(process.cwd(), '/uploads/' + model));
+        res.status(200).sendFile(path.join(process.cwd(), '/uploads/' + model));
     }
 }
 
