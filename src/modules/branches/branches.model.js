@@ -103,6 +103,17 @@ async function deleteBranchModel(body) {
         };
     }
 
+    const allowedBranches = await uniqRow('select * from allowedbranch where branch_id = $1', branch_id)
+
+    if (allowedBranches.rows.length) {
+        return {
+            action: true,
+            status: 400,
+            error: error.BRANCH_DELETE_ERROR,
+            message: `O'chirmoqchi bo'lgan filial da bog'langan bazabor`,
+        };
+    }
+
     const result = await uniqRow('delete from branches where branch_id=($1) returning * ', branch_id);
 
     if (result.rows.length) {
