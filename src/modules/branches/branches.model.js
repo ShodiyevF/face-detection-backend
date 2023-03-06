@@ -9,7 +9,7 @@ async function readBranchModel() {
 async function createBranchesModel(body) {
     const { branch_name } = body;
 
-    const isExist = await uniqRow('select * from branches where upper(branch_name) = ($1)',branch_name.trim().toUpperCase());  
+    const isExist = await uniqRow('select * from branches where upper(branch_name) = ($1)', branch_name.trim().toUpperCase());
 
     if (isExist.rows.length > 0) {
         return {
@@ -49,8 +49,12 @@ async function updateBranchModel(params, body) {
     }
 
     const branchName = branch_name ? branch_name : findedBranch.rows[0].branch_name;
-    
-    const findedName = await uniqRow('select * from branches where upper(branch_name) = $1 and branch_id != $2', branch_name.trim().toUpperCase(), branch_id);
+
+    const findedName = await uniqRow(
+        'select * from branches where upper(branch_name) = $1 and branch_id != $2',
+        branch_name.trim().toUpperCase(),
+        branch_id,
+    );
 
     if (findedName.rows.length) {
         return {
