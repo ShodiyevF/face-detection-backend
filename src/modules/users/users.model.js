@@ -163,7 +163,7 @@ async function updateUsersModel(body, files, params) {
 
     let user_img = user.rows[0].user_img;
     if (files && files[UPLOAD_IMG_NAME]) {
-        await fs.unlinkSync(UPLOAD_FOLDER + '\\' + user_img)
+        await fs.unlinkSync(UPLOAD_FOLDER + '\\' + user_img);
         const ext = path.extname(files[UPLOAD_IMG_NAME].name);
         const filename = `${Date.now()}-${String(Math.round(Math.random() * 1e9)).padEnd(15, '0') + ext}`;
         user_img = filename;
