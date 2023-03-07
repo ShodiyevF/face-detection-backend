@@ -1,7 +1,8 @@
+const { UPLOAD_IMG_NAME, UPLOAD_FOLDER } = require('../../config/upload');
 const { error } = require('../../config/error.names');
 const { uniqRow } = require('../../lib/pg');
 const path = require('path');
-const { UPLOAD_IMG_NAME, UPLOAD_FOLDER } = require('../../config/upload');
+const fs = require('fs');
 
 async function getUsersModel() {
     const querySelectUser = `
@@ -161,8 +162,9 @@ async function updateUsersModel(body, files, params) {
     }
 
     let user_img = user.rows[0].user_img;
-    if (files && files['user_img']) {
-        const ext = path.extname(files['user_img'].name);
+    if (files && files[UPLOAD_IMG_NAME]) {
+        await fs.unlinkSync(UPLOAD_FOLDER + '\\' + user_img)
+        const ext = path.extname(files[UPLOAD_IMG_NAME].name);
         const filename = `${Date.now()}-${String(Math.round(Math.random() * 1e9)).padEnd(15, '0') + ext}`;
         user_img = filename;
     }
