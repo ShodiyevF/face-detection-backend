@@ -3,30 +3,23 @@ const { uniqRow } = require('../../lib/pg');
 
 async function readBranchModel() {
     const result = await uniqRow('select * from branches');
-    if (!result.rows.length) {
-        return {
-            action: true,
-            status: 400,
-            error: error.BRANCH_NAME_NOT_FOUND,
-            message: 'Bunday nomli filial  topilmadi !',
-        };
-    }
     return result.rows;
 }
 
-async function createBrachesModel(body) {
+async function createBranchesModel(body) {
     const { branch_name } = body;
 
-    const isExist = await uniqRow('select * from branches where branch_name = ($1)', branch_name);
+    const isExist = await uniqRow('select * from branches where upper(branch_name) = ($1)', branch_name.trim().toUpperCase());
+
     if (isExist.rows.length > 0) {
         return {
             action: true,
-            status: 400,
-            error: error.BRANCH_NAME_EXIST,
+            status: 409,
+            error: error.BRANCH_NAME_ALREADY_EXIST,
             message: 'Bunday filial nomi mavjud !',
         };
     }
-    const result = await uniqRow('insert into branches (branch_name) values($1) returning * ', branch_name);
+    const result = await uniqRow('insert into branches (branch_name) values($1) returning * ', branch_name.trim());
 
     if (result.rows.length) {
         return result.rows[0];
@@ -35,14 +28,14 @@ async function createBrachesModel(body) {
             action: true,
             status: 400,
             error: error.BRANCH_POST_ERROR,
-            message: 'Xatolik sodir bo`ldi, qaytadan urunib ko`ring !',
+            message: 'Filial nomini qo`shishda xatolik sodir bo`ldi, qaytadan urunib ko`ring !',
         };
     }
 }
 
 async function updateBranchModel(params, body) {
-    const { branch_name } = body;
     const { branch_id } = params;
+    const { branch_name } = body;
 
     const findedBranch = await uniqRow('select * from branches where branch_id = ($1)', branch_id);
 
@@ -55,20 +48,24 @@ async function updateBranchModel(params, body) {
         };
     }
 
-    const branchName = branch_name ? branch_name : findedBranch.rows[0].branch_name
+    const branchName = branch_name ? branch_name : findedBranch.rows[0].branch_name;
 
-    const findedName = await uniqRow('select * from branches where branch_name = $1', branch_name);
+    const findedName = await uniqRow(
+        'select * from branches where upper(branch_name) = $1 and branch_id != $2',
+        branch_name.trim().toUpperCase(),
+        branch_id,
+    );
 
     if (findedName.rows.length) {
         return {
             action: true,
-            status: 404,
+            status: 409,
             error: error.BRANCH_NAME_ALREADY_EXIST,
             message: `Kiritilgan filial allaqachon qo'shilgan, iltimos boshqa nom kiriting`,
         };
     }
 
-    const result = await uniqRow('update branches set branch_name = $1 where branch_id= $2 returning *', branchName, branch_id);
+    const result = await uniqRow('update branches set branch_name = $1 where branch_id= $2 returning *', branchName.trim(), branch_id);
     if (result.rows.length) {
         return result.rows[0];
     } else {
@@ -76,7 +73,7 @@ async function updateBranchModel(params, body) {
             action: true,
             status: 400,
             error: error.BRANCH_EDIT_ERROR,
-            message: 'Xatolik yuz berdi, qaytadan urunib ko`ring !',
+            message: 'Branch_name ni o`zgartirishda xatolik yuz berdi, qaytadan urunib ko`ring !',
         };
     }
 }
@@ -94,18 +91,29 @@ async function deleteBranchModel(body) {
             message: 'Kiritilgan filial topilmadi',
         };
     }
-    
-    const users = await uniqRow('select * from users where branch_id = $1', branch_id)
+
+    const users = await uniqRow('select * from users where branch_id = $1', branch_id);
 
     if (users.rows.length) {
         return {
             action: true,
-            status: 401,
+            status: 400,
             error: error.BRANCH_DELETE_ERROR,
             message: `O'chirmoqchi bo'lgan filial da bog'langan foydalanuvchi bor`,
         };
     }
-    
+
+    const allowedBranches = await uniqRow('select * from allowedbranch where branch_id = $1', branch_id);
+
+    if (allowedBranches.rows.length) {
+        return {
+            action: true,
+            status: 400,
+            error: error.BRANCH_DELETE_ERROR,
+            message: `O'chirmoqchi bo'lgan filial da bog'langan bazabor`,
+        };
+    }
+
     const result = await uniqRow('delete from branches where branch_id=($1) returning * ', branch_id);
 
     if (result.rows.length) {
@@ -113,15 +121,15 @@ async function deleteBranchModel(body) {
     } else {
         return {
             action: true,
-            status: 401,
+            status: 400,
             error: error.BRANCH_DELETE_ERROR,
-            message: 'Xatolik yuz berdi, qaytadan urunib ko`ring !',
+            message: 'Branch_name ni o`chirishda xatolik yuz berdi, qaytadan urunib ko`ring !',
         };
     }
 }
 
 module.exports = {
-    createBrachesModel,
+    createBranchesModel,
     readBranchModel,
     updateBranchModel,
     deleteBranchModel,
