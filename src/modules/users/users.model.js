@@ -29,7 +29,7 @@ async function getUsersModel() {
         const selectBranch = await uniqRow('select * from branches where branch_id = $1', user.branch_id);
         const selectRoles = await uniqRow('select * from userrole where role_id = $1', user.role_id);
 
-        user.user_img = 'http://192.168.1.139:3001/api/users/img/' + user.user_id;
+        user.user_img = 'http://192.168.1.56:3001/api/users/img/' + user.user_id;
         user.allowed_branches = allowedBranches;
         user.branch = selectBranch.rows[0];
         user.role = selectRoles.rows[0];
