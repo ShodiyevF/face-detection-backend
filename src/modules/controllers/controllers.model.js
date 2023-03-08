@@ -54,7 +54,50 @@ async function createContollerModel(body) {
     return result
 }
 
+async function updateControllerModel(body, params){
+    const { controller_id } = params
+    const { controller_name, controller_url, controller_username, controller_password, branch_id } = body
+    
+    const controller = (await uniqRow(`select * from controllers where controller_id = $1`, controller_id)).rows
+    
+    if (!controller.length) {
+        return {
+            action: true,
+            status: 404,
+            error: error.CONTROLLER_NOT_FOUND,
+            message: `Bunday controller topilmadi !`
+        }
+    }
+
+    const selectedBranch = await uniqRow('select * from branches where branch_id = $1', branch_id)
+
+    if (!selectedBranch.rows.length) {
+        return {
+            action: true,
+            status: 404,
+            error: error.BRANCH_NOT_FOUND,
+            message: `Bunday filial topilmadi !`
+        }
+    }
+
+    const name = controller_name && controller_name.length ? controller_name.trim() : controller[0].controller_name
+    const url = controller_url && controller_url.length ? controller_url.trim() : controller[0].controller_url
+    const username = controller_username && controller_username.length ? controller_username.trim() : controller[0].controller_username
+    const password = controller_password && controller_password.length ? controller_password.trim() : controller[0].controller_password
+    const branch = branch_id && branch_id.length ? branch_id.trim() : controller[0].branch_id
+
+    const queryUpdateController = `
+    update controllers set controller_name = $1, controller_url = $2, controller_username = $3, controller_password = $4, branch_id = $5 where controller_id = $6
+    `
+    await uniqRow(queryUpdateController, name, url, username, password, branch, controller_id)
+
+    const updatedController = (await getContollerModel()).find(el => el.controller_id == controller_id)
+
+    return updatedController
+}
+
 module.exports = {
     getContollerModel,
-    createContollerModel
+    createContollerModel,
+    updateControllerModel
 };

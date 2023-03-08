@@ -20,6 +20,12 @@ function authLoginValidation(req, res, next) {
             error: error.VALIDATION_ERROR_USER_PASSWORD_REQUIRED,
             message: `user_password majburiy`,
         });
+    } else if (body.user_password.length > 64) {
+        res.status(403).json({
+            status: 403,
+            error: error.VALIDATION_ERROR_USER_PASSWORD_LENGTH,
+            message: `user_password uzunligi 64tadan kichik bo'lishi kerak`,
+        });
     } else {
         next();
     }
