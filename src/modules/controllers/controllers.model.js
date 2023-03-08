@@ -35,6 +35,17 @@ async function createContollerModel(body) {
         };
     }
 
+    const controllerUrl = await uniqRow('select * from controllers where controller_url = $1', url);
+    
+    if (controllerUrl.rows.length) {
+        return {
+            action: true,
+            status: 409,
+            error: error.CONTROLLER_URL_ALREADY_EXISTS,
+            message: `Bunday controller url qo'shilgan !`,
+        };
+    }
+
     const branch = await uniqRow('select * from branches where branch_id = $1', branchid)
 
     if (!branch.rows.length) {
