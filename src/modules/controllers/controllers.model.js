@@ -96,8 +96,30 @@ async function updateControllerModel(body, params){
     return updatedController
 }
 
+async function deleteControllerModel(params){
+    const { controller_id } = params
+    
+    const controller = (await uniqRow(`select * from controllers where controller_id = $1`, controller_id)).rows
+    
+    if (!controller.length) {
+        return {
+            action: true,
+            status: 404,
+            error: error.CONTROLLER_NOT_FOUND,
+            message: `Bunday controller topilmadi !`
+        }
+    }
+
+    const queryDeleteController = `
+    delete from controllers where controller_id = $1 returning *
+    `
+    const deleted = await uniqRow(queryDeleteController, controller_id)
+    return deleted.rows
+}
+
 module.exports = {
     getContollerModel,
     createContollerModel,
-    updateControllerModel
+    updateControllerModel,
+    deleteControllerModel
 };

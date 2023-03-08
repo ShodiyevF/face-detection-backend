@@ -1,4 +1,4 @@
-const { getContollerModel, createContollerModel, updateControllerModel } = require('./controllers.model');
+const { getContollerModel, createContollerModel, updateControllerModel, deleteControllerModel } = require('./controllers.model');
 
 async function getContollerCtrl(req, res) {
     const model = await getContollerModel();
@@ -33,8 +33,22 @@ async function updateControllerCtrl(req, res) {
     }
 }
 
+async function deteleControllerCtrl(req, res) {
+    const model = await deleteControllerModel(req.params);
+    if (model.action) {
+        delete model.action
+        return res.status(model.status).json(model)
+    } else {
+        return res.status(200).json({
+            status: 200,
+            message: 'Controller successfully deleted'
+        })
+    }
+}
+
 module.exports = {
     getContollerCtrl,
     createContollerCtrl,
-    updateControllerCtrl
+    updateControllerCtrl,
+    deteleControllerCtrl
 };

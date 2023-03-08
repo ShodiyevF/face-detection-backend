@@ -154,7 +154,28 @@ function updateControllerValidation(req, res, next) {
     }
 }
 
+function deleteControllerValidation(req, res, next) {
+    const { controller_id } = req.params;
+
+    if (!controller_id) {
+        res.json({
+            status: 403,
+            error: error.VALIDATION_ERROR_CONTROLLERID_REQUIRED,
+            message: 'controller_id majburiy',
+        });
+    } else if (!controller_id.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')) {
+        res.json({
+            status: 403,
+            error: error.VALIDATION_ERROR_CONTROLLERID_UUID,
+            message: `controller_id UUID bo'lishi kerak`,
+        });
+    } else {
+        next();
+    }
+}
+
 module.exports = {
     createControllerValidation,
-    updateControllerValidation
+    updateControllerValidation,
+    deleteControllerValidation
 };
