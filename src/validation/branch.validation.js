@@ -32,7 +32,7 @@ function updateBranchValidation(req, res, next) {
     if (!params.branch_id.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')) {
         res.status(403).json({
             status: 403,
-            error: error.VALIDATION_ERROR,
+            error: error.VALIDATION_ERROR_BRANCH_UUID,
             message: `Filial uuid bo'lishi kerek`,
         });
     } else if (!body.branch_name) {
