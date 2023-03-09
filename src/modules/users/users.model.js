@@ -1,7 +1,8 @@
+const { UPLOAD_IMG_NAME, UPLOAD_FOLDER } = require('../../config/upload');
 const { error } = require('../../config/error.names');
 const { uniqRow } = require('../../lib/pg');
 const path = require('path');
-const { UPLOAD_IMG_NAME, UPLOAD_FOLDER } = require('../../config/upload');
+const fs = require('fs');
 
 async function getUsersModel() {
     const querySelectUser = `
@@ -28,7 +29,7 @@ async function getUsersModel() {
         const selectBranch = await uniqRow('select * from branches where branch_id = $1', user.branch_id);
         const selectRoles = await uniqRow('select * from userrole where role_id = $1', user.role_id);
 
-        user.user_img = 'http://192.168.1.139:3001/api/users/img/' + user.user_id;
+        user.user_img = 'http://192.168.1.56:3001/api/users/img/' + user.user_id;
         user.allowed_branches = allowedBranches;
         user.branch = selectBranch.rows[0];
         user.role = selectRoles.rows[0];
@@ -161,8 +162,9 @@ async function updateUsersModel(body, files, params) {
     }
 
     let user_img = user.rows[0].user_img;
-    if (files && files['user_img']) {
-        const ext = path.extname(files['user_img'].name);
+    if (files && files[UPLOAD_IMG_NAME]) {
+        await fs.unlinkSync(UPLOAD_FOLDER + '\\' + user_img);
+        const ext = path.extname(files[UPLOAD_IMG_NAME].name);
         const filename = `${Date.now()}-${String(Math.round(Math.random() * 1e9)).padEnd(15, '0') + ext}`;
         user_img = filename;
     }
