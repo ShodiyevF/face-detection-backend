@@ -3,6 +3,7 @@ const { getUsersCtrl, createUsersCtrl, updateUsersCtrl, deleteUserCtrl, getUserI
 const { PROFILE_IMAGE_SIZE, PROFILE_IMAGE_TYPES, UPLOAD_FOLDER } = require('../../config/upload');
 const { authorizationMiddleware } = require('../../middleware/authorization.middleware');
 const { fileuploadMiddleware } = require('../../middleware/fileupload.middleware');
+const { terminalValidationMiddleware } = require('../../lib/terminal');
 
 const express = require('express').Router();
 
@@ -13,6 +14,7 @@ express.post(
     authorizationMiddleware,
     fileuploadMiddleware(UPLOAD_FOLDER, PROFILE_IMAGE_TYPES, PROFILE_IMAGE_SIZE, 'user_img', true),
     createUserValidation,
+    terminalValidationMiddleware,
     (req, res) => createUsersCtrl(req, res),
 );
 express.patch(
