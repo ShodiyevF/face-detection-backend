@@ -138,8 +138,15 @@ async function createUserValidation(req, res, next) {
 
 async function updateUserValidation(req, res, next) {
     const body = req.body;
+    const params = req.params;
 
-    if (body.user_firstname && !body.user_firstname.trim()) {
+    if (!params.user_id.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')){
+        return res.status(403).json({
+            status: 403,
+            error: error.VALIDATION_ERROR,
+            message: `user_id uuid bo'lishi kerak !`,
+        });
+    } else if (body.user_firstname && !body.user_firstname.trim()) {
         return res.status(403).json({
             status: 403,
             error: error.VALIDATION_ERROR,
